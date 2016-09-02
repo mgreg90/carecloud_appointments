@@ -15,7 +15,7 @@ describe "Appointment API GET Request", type: :request do
     get '/appointments/1',
       params: { id: 1 }
 
-    expect_json
+    expect_json(id: 1)
   end
   it "displays a list of appointments"
   it "displays a list of appointments by date"

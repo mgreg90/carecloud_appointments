@@ -1,7 +1,8 @@
 class AppointmentController < ApplicationController
 
   def show
-    
+    @appointment = Appointment.find(params[:id])
+    render json: @appointment, status: 200
   end
 
   def index
