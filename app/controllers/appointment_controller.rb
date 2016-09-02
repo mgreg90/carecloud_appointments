@@ -1,7 +1,7 @@
 class AppointmentController < ApplicationController
 
   def show
-
+    
   end
 
   def index
@@ -20,7 +20,7 @@ class AppointmentController < ApplicationController
 
   end
 
-private # -------------------------- private -----------------------------------
+  private # -------------------------- private ---------------------------------
 
   def search_params
 
