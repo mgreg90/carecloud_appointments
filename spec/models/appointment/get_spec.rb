@@ -2,22 +2,58 @@ require 'rails_helper'
 require 'airborne'
 
 describe "Appointment API GET Request", type: :request do
-  Appointment.create( first_name: 'Test1FirstName',
-                      last_name: 'Test1LastName',
-                      start_time: DateTime.new(2011, 10, 9, 8, 7),
-                      end_time: DateTime.new(2011, 10, 9, 9, 7))
-  Appointment.create( first_name: 'Test2FirstName',
-                      last_name: 'Test2LastName',
-                      start_time: DateTime.new(2012, 11, 10, 9, 8),
-                      end_time: DateTime.new(2012, 11, 10, 10, 8))
+
+# ----------------------------- Before all Block -------------------------------
+  before :each do
+    # create two test appointments
+    Appointment.create( first_name: 'Test1FirstName',
+      last_name: 'Test1LastName',
+      start_time: DateTime.new(2011, 10, 9, 8, 7),
+      end_time: DateTime.new(2011, 10, 9, 9, 7),
+      comments: "Test1Comment"
+      )
+    Appointment.create( first_name: 'Test2FirstName',
+      last_name: 'Test2LastName',
+      start_time: DateTime.new(2012, 11, 10, 9, 8),
+      end_time: DateTime.new(2012, 11, 10, 10, 8),
+      comments: "Test2Comment"
+      )
+  end
+  # --------------------------- End Before all Block ---------------------------
+
 
   it "displays a single appointment by id" do
-    get '/appointments/1',
-      params: { id: 1 }
-
-    expect_json(id: 1)
+    id = Appointment.last.id
+    get "/appointments/#{id}"
+    expect_json(appointment: {id: id} )
+    expect_json_types( appointment: {
+      first_name: :string,
+      last_name: :string,
+      start_time: :date,
+      end_time: :date,
+      comments: :string
+    })
   end
-  it "displays a list of appointments"
+
+  it "displays a list of appointments" do
+    get '/appointments/'
+
+    appointments = json_body[:appointments]
+    appt_count = Appointment.all.count
+
+    expect_json_types(appointments: :array_of_objects)
+    appointments.each do |x|
+      expect(x[:id].class).to be(Fixnum)
+      expect(x[:first_name].class).to be(String)
+      expect(x[:last_name].class).to be(String)
+      expect(x[:start_time].class).to be(String)
+      expect(x[:end_time].class).to be(String)
+      expect(x[:comments].class).to be(String)
+    end
+
+    expect(appointments.length).to eq(appt_count)
+
+  end
   it "displays a list of appointments by date"
   it "displays a list of appointments between dates"
   it "displays a list of appointments by year"
@@ -36,4 +72,11 @@ describe "Appointment API GET Request", type: :request do
   it "displays a list of appointments by last_name and month"
   it "displays a list of appointments by last_name and day"
   it "displays a list of appointments by last_name and hour"
+
+
+  # Clear appointments after test is done
+  after :all do
+    Appointment.destroy_all
+  end
+
 end

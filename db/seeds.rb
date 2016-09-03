@@ -4,6 +4,9 @@ require 'csv'
 
 csv_text = File.read(Rails.root.join('lib', 'seeds', 'appt_data.csv'))
 csv_text = csv_text.split("\r\r\n")
+
+# TODO Classic right-out-of-wyncode mike using each loops for everything
+# Improve this
 csv = []
 csv_text.each do |x|
   csv << x.split(',')
@@ -18,7 +21,7 @@ csv.each do |row|
   a.end_time = DateTime.strptime("#{row[1]} EST", '%m/%d/%Y %H:%M %Z') + 2000.years
   a.first_name = row[2].downcase
   a.last_name = row[3].downcase
-  a.comments = row[4] if row[4].nil? == false
+  a.comments = row[4] if !(row[4].nil?)
   if a.save(validate: false) # This had to be false because validation would
                              # prevent new appointments from being scheduled
                              # in the past

@@ -1,12 +1,13 @@
 class AppointmentController < ApplicationController
+  before_action :set_appt, only: [:show]
+  before_action :set_appts, only: [:index]
 
   def show
-    @appointment = Appointment.find(params[:id])
     render json: @appointment, status: 200
   end
 
   def index
-
+    render json: @appointments, status: 200
   end
 
   def create
@@ -23,12 +24,20 @@ class AppointmentController < ApplicationController
 
   private # -------------------------- private ---------------------------------
 
-  def search_params
+  def set_appt
+    @appointment = Appointment.set_one(search_params)
+  end
 
+  def set_appts
+    @appointments = Appointment.set_many(search_params)
+  end
+
+  def search_params
+    params
   end
 
   def update_params
-
+    params
   end
 
 end
