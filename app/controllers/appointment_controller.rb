@@ -74,8 +74,8 @@ class AppointmentController < ApplicationController
   end
 
   def clean_user_input_dates(some_params)
-    some_params[:start_time] = to_dt(some_params[:start_time])
-    some_params[:end_time] = to_dt(some_params[:end_time])
+    some_params[:start_time] = to_dt(some_params[:start_time]) if some_params[:start_time]
+    some_params[:end_time] = to_dt(some_params[:end_time]) if some_params[:end_time]
     some_params
   end
 

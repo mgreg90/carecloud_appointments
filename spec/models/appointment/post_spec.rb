@@ -13,13 +13,11 @@ describe "Appointment API POST Request", type: :request do
   end
   # --------------------------- End Before all Block ---------------------------
 
-
+# --------------------------------------- Successful Creation Tests ------------
   it "creates a new appointment" do
     url =
       "/appointments?first_name=#{@first_name}&last_name=#{@last_name}&"\
       "start_time=#{@start_time}&end_time=#{@end_time}&comments=#{@comments}"
-
-    p url
 
     post "#{url}"
 
@@ -40,8 +38,6 @@ describe "Appointment API POST Request", type: :request do
       "/appointments?first_name=#{@first_name}&last_name=#{@last_name}&"\
       "start_time=#{@start_time}&end_time=#{@end_time}&comments=#{@comments}"
 
-    p url
-
     post "#{url}"
 
     appt = Appointment.last
@@ -52,10 +48,59 @@ describe "Appointment API POST Request", type: :request do
     expect(appt.comments).to eq('Test1Comment')
   end
 
-  it "doesn't create a new appointment if there is no first_name"
-  it "doesn't create a new appointment if there is no last_name"
-  it "doesn't create a new appointment if there is no start_time"
-  it "doesn't create a new appointment if there is no end_time"
+# -------------------- Presence tests -----------------------------------------
+  it "doesn't create a new appointment if there is no first_name" do
+
+    url =
+      "/appointments?last_name=#{@last_name}&"\
+      "start_time=#{@start_time}&end_time=#{@end_time}&comments=#{@comments}"
+
+    post "#{url}"
+
+    expect(Appointment.last).to eq(nil)
+
+  end
+  it "doesn't create a new appointment if there is no last_name" do
+
+    url =
+      "/appointments?first_name=#{@first_name}&"\
+      "start_time=#{@start_time}&end_time=#{@end_time}&comments=#{@comments}"
+
+    post "#{url}"
+
+    expect(Appointment.last).to eq(nil)
+
+  end
+  it "doesn't create a new appointment if there is no start_time" do
+
+    url =
+      "/appointments?first_name=#{@first_name}&last_name=#{@last_name}&"\
+      "end_time=#{@end_time}&comments=#{@comments}"
+
+    post "#{url}"
+
+    expect(Appointment.last).to eq(nil)
+
+  end
+  it "doesn't create a new appointment if there is no end_time" do
+
+    url =
+      "/appointments?first_name=#{@first_name}&last_name=#{@last_name}&"\
+      "start_time=#{@start_time}&comments=#{@comments}"
+
+    post "#{url}"
+
+    expect(Appointment.last).to eq(nil)
+
+  end
+
+# ---------------------------Date Validation Tests -----------------------------
+
+  it "doesn't create a new appointment if start_date is not in the future"
+  it "doesn't create a new appointment if end_date is not after start_date"
+  it "doesn't create a new appointment if an existing appointment starts or \
+  ends between it's start_date and end_date"
+
 
   # Clear appointments after test is done
   after :all do
