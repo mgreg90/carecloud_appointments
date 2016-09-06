@@ -1,9 +1,12 @@
 class Appointment < ApplicationRecord
 
-    validates :first_name, presence: true
-    validates :last_name, presence: true
-    validates :start_time, presence: { message: "blank or invalid date" }
-    validates :end_time, presence: { message: "blank or invalid date" }
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+  validates :start_time, presence: { message: "blank or invalid date" }
+  validates :end_time, presence: { message: "blank or invalid date" }
+
+  include ActiveModel::Validations
+  validates_with AppointmentDateValidator
 
   def self.set_one(srch_params)
     @appointment = { appointment: find(srch_params[:id]) }
