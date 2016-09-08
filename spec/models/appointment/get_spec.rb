@@ -6,18 +6,22 @@ describe "Appointment API GET Request", type: :request do
 # ----------------------------- Before all Block -------------------------------
   before :each do
     # create two test appointments
-    Appointment.create( first_name: 'Test1FirstName',
+    a1 = Appointment.create( first_name: 'Test1FirstName',
       last_name: 'Test1LastName',
-      start_time: DateTime.new(2011, 10, 9, 8, 7),
-      end_time: DateTime.new(2011, 10, 9, 9, 7),
+      start_time: DateTime.new(2016, 10, 9, 8, 7),
+      end_time: DateTime.new(2016, 10, 9, 9, 7),
       comments: "Test1Comment"
       )
-    Appointment.create( first_name: 'Test2FirstName',
+    a2 = Appointment.create( first_name: 'Test2FirstName',
       last_name: 'Test2LastName',
-      start_time: DateTime.new(2012, 11, 10, 9, 8),
-      end_time: DateTime.new(2012, 11, 10, 10, 8),
+      start_time: DateTime.new(2017, 11, 10, 9, 8),
+      end_time: DateTime.new(2017, 11, 10, 10, 8),
       comments: "Test2Comment"
       )
+    p "--------------------------1-----------------------------"
+    p Appointment.all
+    p a1.errors
+    p a2.errors
   end
   # --------------------------- End Before all Block ---------------------------
 
@@ -52,6 +56,7 @@ describe "Appointment API GET Request", type: :request do
     end
 
     expect(appointments.length).to eq(appt_count)
+    expect(appointments.length).to be > 0
 
   end
   it "displays a list of appointments by date"

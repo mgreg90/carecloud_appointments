@@ -5,7 +5,6 @@ class Appointment < ApplicationRecord
   validates :start_time, presence: { message: "blank or invalid date" }
   validates :end_time, presence: { message: "blank or invalid date" }
 
-  include ActiveModel::Validations
   validates_with AppointmentDateValidator
 
   def self.set_one(srch_params)

@@ -110,10 +110,85 @@ describe "Appointment API POST Request", type: :request do
     expect(Appointment.last).to eq(nil)
 
   end
-  it "doesn't create a new appointment if end_date is not after start_date"
-  it "doesn't create a new appointment if an existing appointment starts or "\
-  "ends between it's start_date and end_date"
 
+  it "doesn't create a new appointment if end_date is not after start_date" do
+
+    @end_time = "10/9/2017 7:07"
+
+    url =
+      "/appointments?first_name=#{@first_name}&last_name=#{@last_name}&"\
+      "start_time=#{@start_time}&end_time=#{@end_time}&comments=#{@comments}"
+
+    post "#{url}"
+
+    expect(Appointment.last).to eq(nil)
+
+  end
+
+  it "doesn't create a new appointment if an existing appointment starts "\
+  "at the same time" do
+
+    url =
+      "/appointments?first_name=#{@first_name}&last_name=#{@last_name}&"\
+      "start_time=#{@start_time}&end_time=#{@end_time}&comments=#{@comments}"
+
+    post "#{url}"
+
+    # Create one test where other start_date causes conflict
+    @first_name = "Test2FirstName"
+    @last_name = "Test2LastName"
+    @start_time = "10/9/2017 8:07"
+    @end_time = "10/9/2017 9:00"
+    @comments = "Test2Comment"
+
+    url =
+      "/appointments?first_name=#{@first_name}&last_name=#{@last_name}&"\
+      "start_time=#{@start_time}&end_time=#{@end_time}&comments=#{@comments}"
+
+    post "#{url}"
+
+    expect(Appointment.last.first_name).to eq("Test1FirstName")
+
+  end
+
+  it "doesn't create a new appointment if an existing appointment starts after "\
+  "or ends before it's start_date and end_date respectively" do
+
+    # Create first appointment normally
+    url =
+      "/appointments?first_name=#{@first_name}&last_name=#{@last_name}&"\
+      "start_time=#{@start_time}&end_time=#{@end_time}&comments=#{@comments}"
+
+    post "#{url}"
+
+    # Create second appointment that has start_time between original
+    @first_name = "Test2FirstName"
+    @start_time = "10/9/2017 8:37"
+    @end_time = "10/9/2017 9:37"
+
+    url =
+      "/appointments?first_name=#{@first_name}&last_name=#{@last_name}&"\
+      "start_time=#{@start_time}&end_time=#{@end_time}&comments=#{@comments}"
+
+    post "#{url}"
+
+    # Create third appointment that has end_time between original
+    @first_name = "Test3FirstName"
+    @start_time = "10/9/2017 8:37"
+    @end_time = "10/9/2017 9:37"
+
+    url =
+      "/appointments?first_name=#{@first_name}&last_name=#{@last_name}&"\
+      "start_time=#{@start_time}&end_time=#{@end_time}&comments=#{@comments}"
+
+    post "#{url}"
+
+    # Test to make sure only first appt exists
+
+    expect(Appointment.all.length).to eq(1)
+    expect(Appointment.last.first_name).to eq("Test1FirstName")
+
+  end
 
   # Clear appointments after test is done
   after :all do
