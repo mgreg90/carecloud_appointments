@@ -20,6 +20,7 @@ describe "Appointment API DELETE Request", type: :request do
     )
   end
   # --------------------------- End Before all Block ---------------------------
+
   it "deletes an appointment found by id" do
 
     id = Appointment.last.id
@@ -32,24 +33,24 @@ describe "Appointment API DELETE Request", type: :request do
     expect_status 404
 
   end
-  it "deletes an appointment found by date"
-  it "deletes an appointment found between dates"
-  it "deletes an appointment found by year"
-  it "deletes an appointment found by month"
-  it "deletes an appointment found by day"
-  it "deletes an appointment found by hour"
-  it "deletes an appointment found by first_name"
-  it "deletes an appointment found by last_name"
-  it "deletes an appointment found by first_name and date"
-  it "deletes an appointment found by last_name and date"
-  it "deletes an appointment found by first_name and year"
-  it "deletes an appointment found by first_name and month"
-  it "deletes an appointment found by first_name and day"
-  it "deletes an appointment found by first_name and hour"
-  it "deletes an appointment found by last_name and year"
-  it "deletes an appointment found by last_name and month"
-  it "deletes an appointment found by last_name and day"
-  it "deletes an appointment found by last_name and hour"
-  it "gives an error if search returns multiple"
-  it "gives an error if search returns none"
+  # it "deletes an appointment found by date"
+  # it "deletes an appointment found between dates"
+  # it "deletes an appointment found by year"
+  # it "deletes an appointment found by month"
+  # it "deletes an appointment found by day"
+  # it "deletes an appointment found by hour"
+  # it "deletes an appointment found by first_name"
+  # it "deletes an appointment found by last_name"
+  # it "deletes an appointment found by first_name and date"
+  # it "deletes an appointment found by last_name and date"
+  # it "deletes an appointment found by first_name and year"
+  # it "deletes an appointment found by first_name and month"
+  # it "deletes an appointment found by first_name and day"
+  # it "deletes an appointment found by first_name and hour"
+  # it "deletes an appointment found by last_name and year"
+  # it "deletes an appointment found by last_name and month"
+  # it "deletes an appointment found by last_name and day"
+  # it "deletes an appointment found by last_name and hour"
+  # it "gives an error if search returns multiple"
+  # it "gives an error if search returns none"
 end
