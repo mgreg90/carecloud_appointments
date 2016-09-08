@@ -8,11 +8,27 @@ class Appointment < ApplicationRecord
   validates_with AppointmentDateValidator
 
   def self.set_one(srch_params)
-    @appointment = { appointment: find(srch_params[:id]) }
+    @appointment = { appointment: find_by_id(srch_params[:id]) }
+    if @appointment[:appointment].nil?
+      @appointment = {
+        errors: {
+          id: "invalid appointment id given"
+        }
+      }
+    end
+    @appointment
   end
 
   def self.set_many(srch_params)
     @appointments = { appointments: all }
+    if @appointments[:appointments].empty?
+      @appointments = {
+        errors: {
+          base: "currently no appointments"
+        }
+      }
+    end
+    @appointments
   end
 
 end

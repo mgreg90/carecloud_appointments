@@ -1,5 +1,37 @@
-describe "Appointment API DELETE Request" do
-  it "deletes an appointment found by id"
+require 'rails_helper'
+require 'airborne'
+
+describe "Appointment API DELETE Request", type: :request do
+
+  # ----------------------------- Before all Block -------------------------------
+  before :each do
+    # create two test appointments
+    Appointment.create( first_name: 'Test1FirstName',
+    last_name: 'Test1LastName',
+    start_time: DateTime.new(2016, 10, 9, 8, 7),
+    end_time: DateTime.new(2016, 10, 9, 9, 7),
+    comments: "Test1Comment"
+    )
+    Appointment.create( first_name: 'Test2FirstName',
+    last_name: 'Test2LastName',
+    start_time: DateTime.new(2017, 11, 10, 9, 8),
+    end_time: DateTime.new(2017, 11, 10, 10, 8),
+    comments: "Test2Comment"
+    )
+  end
+  # --------------------------- End Before all Block ---------------------------
+  it "deletes an appointment found by id" do
+
+    id = Appointment.last.id
+    delete "/appointments/#{id}"
+
+    expect_status 200
+
+    get "/appointments/#{id}"
+
+    expect_status 404
+
+  end
   it "deletes an appointment found by date"
   it "deletes an appointment found between dates"
   it "deletes an appointment found by year"

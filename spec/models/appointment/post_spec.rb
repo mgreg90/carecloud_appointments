@@ -1,6 +1,8 @@
 require 'rails_helper'
 require 'airborne'
 
+# TODO add tests for http status codes
+
 describe "Appointment API POST Request", type: :request do
 
   # ----------------------------- Before all Block -------------------------------

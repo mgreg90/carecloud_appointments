@@ -4,4 +4,6 @@ Rails.application.routes.draw do
   get '/appointments/:id' => 'appointment#show', as: 'show'
 
   post '/appointments' => 'appointment#create', as: 'create'
+
+  delete '/appointments/:id' => 'appointment#destroy', as: 'destroy'
 end

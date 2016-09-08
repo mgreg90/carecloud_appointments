@@ -1,13 +1,22 @@
 class AppointmentController < ApplicationController
-  before_action :set_appt, only: [:show]
+  before_action :set_appt, only: [:show, :destroy]
   before_action :set_appts, only: [:index]
 
   def show
-    render json: @appointment, status: 200
+    if @appointment[:errors].nil?
+      render json: @appointment, status: 200
+    else
+      render json: @appointment, status: 404
+    end
   end
 
   def index
-    render json: @appointments, status: 200
+    if @appointments[:errors].nil?
+      render json: @appointments, status: 200
+    else
+      render json: @appointments, status: 404
+    end
+
   end
 
   def create
@@ -25,7 +34,13 @@ class AppointmentController < ApplicationController
   end
 
   def destroy
-
+    if @appointment[:errors].nil?
+      Appointment.delete(@appointment[:appointment].id)
+      @appointment[:message] = "appointment was deleted"
+      render json: @appointment, status: 200
+    else
+      render json: @appointment, status: 404
+    end
   end
 
   private # -------------------------- private ---------------------------------

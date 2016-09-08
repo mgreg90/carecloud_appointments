@@ -37,6 +37,15 @@ describe "Appointment API GET Request", type: :request do
       end_time: :date,
       comments: :string
     })
+    expect_status 200
+  end
+
+  it "gives an error if appointment does not exist" do
+    id = Appointment.last.id + 1
+    get "/appointments/#{id}"
+    expect_json(errors: {id: "invalid appointment id given"} )
+    expect_status 404
+
   end
 
   it "displays a list of appointments" do
@@ -57,8 +66,19 @@ describe "Appointment API GET Request", type: :request do
 
     expect(appointments.length).to eq(appt_count)
     expect(appointments.length).to be > 0
+    expect_status 200
 
   end
+
+  it "gives an error if no appointments exist" do
+    Appointment.destroy_all
+    get "/appointments/"
+    expect_json(errors: {base: "currently no appointments"} )
+    expect_status 404
+
+  end
+
+
   it "displays a list of appointments by date"
   it "displays a list of appointments between dates"
   it "displays a list of appointments by year"
