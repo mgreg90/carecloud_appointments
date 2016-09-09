@@ -5,5 +5,7 @@ Rails.application.routes.draw do
 
   post '/appointments' => 'appointment#create', as: 'create'
 
+  put '/appointments/:id' => 'appointment#update', as: 'update'
+
   delete '/appointments/:id' => 'appointment#destroy', as: 'destroy'
 end

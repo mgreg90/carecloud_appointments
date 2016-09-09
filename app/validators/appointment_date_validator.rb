@@ -33,7 +33,10 @@ class AppointmentDateValidator < ActiveModel::Validator
     rng = appt[:start_time]..appt[:end_time]
     conflicts = Appointment.where(start_time: rng)
       .or(Appointment.where(end_time: rng))
-    if !conflicts.empty?
+    if conflicts.empty? || (conflicts.count == 1 && appt.id == conflicts.first.id)
+      # if there are no conflicts or one conflict is the active appt (for update)
+      # then it is valid
+    else
       appt.errors.add(:start_time, "appointment time is not in the future")
     end
   end

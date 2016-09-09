@@ -1,5 +1,5 @@
 class AppointmentController < ApplicationController
-  before_action :set_appt, only: [:show, :destroy]
+  before_action :set_appt, only: [:show, :destroy, :update]
   before_action :set_appts, only: [:index]
 
   def show
@@ -29,8 +29,25 @@ class AppointmentController < ApplicationController
     end
   end
 
-  def update
+  ################################ NOTE ###########################
+  # Update will not use the search function. Similar to delete, I
+  # like that forcing the user to GET to search prevents accidental
+  # destruction. Forcing the GET and then the PUT functions acts
+  # as a form of user confirmation. Also, search feature would
+  # interfere with passing params in for the update since Rails
+  # prioroitizes query string params over HTTP request body params
+  #################################################################
 
+  def update
+    if @appointment[:errors].nil?
+      p "*" * 50
+      p @appointment[:appointment]
+      p update_params
+      @appointment[:appointment].update(update_params)
+      render json: @appointment, status: 200
+    else
+      render json: @appointment, status: 404
+    end
   end
 
   def destroy
@@ -65,7 +82,9 @@ class AppointmentController < ApplicationController
   end
 
   def update_params
-    params
+    params.require(:appointment).permit(
+      :first_name, :last_name, :start_time, :end_time, :comments
+    )
   end
 
   def to_dt(date_time_string)
