@@ -74,8 +74,20 @@ describe "Appointment API GET Request", type: :request do
 
   end
 
+  it "displays a list of appointments by start_time" do
+    get "/appointments?start_time=10/9/16 8:07"
+    appointments = json_body[:appointments]
+    expect(appointments.length).to eq(1)
+    expect(appointments.first.start_time).to eq(DateTime.new(2016, 10, 9, 8, 7))
+  end
 
-  it "displays a list of appointments by date"
+  it "displays a list of appointments by end_time" do
+    get "/appointments?end_time=10/9/16 9:07"
+    appointments = json_body[:appointments]
+    expect(appointments.length).to eq(1)
+    expect(appointments.first.start_time).to eq(DateTime.new(2016, 10, 9, 9, 7))
+  end
+
   it "displays a list of appointments between dates"
   it "displays a list of appointments by year"
   it "displays a list of appointments by month"

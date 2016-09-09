@@ -29,14 +29,14 @@ class AppointmentController < ApplicationController
     end
   end
 
-  ################################ NOTE ###########################
-  # Update will not use the search function. Similar to delete, I
+  ################################ NOTE ########################################
+  # PUT will not use the search function. Similar to DELETE, I
   # like that forcing the user to GET to search prevents accidental
   # destruction. Forcing the GET and then the PUT functions acts
   # as a form of user confirmation. Also, search feature would
   # interfere with passing params in for the update since Rails
   # prioroitizes query string params over HTTP request body params
-  #################################################################
+  ##############################################################################
 
   def update
     if @appointment[:errors].nil?
@@ -71,7 +71,11 @@ class AppointmentController < ApplicationController
   end
 
   def search_params
-    params
+    these_params = params.permit(
+    :id, :first_name, :last_name, :start_time, :end_time, :comments, :year,
+    :month, :day, :hour
+    )
+    clean_user_input_dates(these_params)
   end
 
   def new_params
