@@ -3,19 +3,12 @@
 require 'csv'
 
 csv_text = File.read(Rails.root.join('lib', 'seeds', 'appt_data.csv'))
-csv_text = csv_text.split("\r\r\n")
-
-# TODO Classic right-out-of-wyncode mike using each loops for everything
-# Improve this
-csv = []
-csv_text.each do |x|
-  csv << x.split(',')
+csv = csv_text.split("\r\r\n").collect do |x|
+  x.split(',')
 end
 csv.shift
-p csv
 
 csv.each do |row|
-  # p row
   a = Appointment.new
   a.start_time = DateTime.strptime("#{row[0]} EST", '%m/%d/%Y %H:%M %Z') + 2000.years
   a.end_time = DateTime.strptime("#{row[1]} EST", '%m/%d/%Y %H:%M %Z') + 2000.years
@@ -32,7 +25,6 @@ csv.each do |row|
     puts "\tS A V E  F A I L E D"
     puts "*" * 60
   end
-  # p a
 end
 
 # End parse appt_data.csv and turn each line into an appointment
