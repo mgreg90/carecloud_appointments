@@ -86,9 +86,6 @@ class AppointmentController < ApplicationController
       :first_name, :last_name, :start_time, :end_time, :comments
     )
     clean_user_input_dates(these_params)
-    # p "these_params:"
-    # p these_params
-    # p these_params[:end_time].year
     these_params
   end
 

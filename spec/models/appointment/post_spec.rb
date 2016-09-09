@@ -29,6 +29,8 @@ describe "Appointment API POST Request", type: :request do
     expect(appt.start_time).to eq(DateTime.new(2017, 10, 9, 8, 7, 0, 'EST'))
     expect(appt.end_time).to eq(DateTime.new(2017, 10, 9, 9, 7, 0, 'EST'))
     expect(appt.comments).to eq('Test1Comment')
+
+    expect_status 201
   end
 
   it "creates a new appointment with given timezones" do
@@ -48,6 +50,8 @@ describe "Appointment API POST Request", type: :request do
     expect(appt.start_time).to eq(DateTime.new(2017, 10, 9, 8, 7, 0, 'CST'))
     expect(appt.end_time).to eq(DateTime.new(2017, 10, 9, 9, 7, 0, 'CST'))
     expect(appt.comments).to eq('Test1Comment')
+
+    expect_status 201
   end
 
 # -------------------- Presence tests -----------------------------------------
@@ -58,6 +62,8 @@ describe "Appointment API POST Request", type: :request do
       "start_time=#{@start_time}&end_time=#{@end_time}&comments=#{@comments}"
 
     post "#{url}"
+
+    expect_status 400
 
     expect(Appointment.last).to eq(nil)
 
@@ -70,6 +76,8 @@ describe "Appointment API POST Request", type: :request do
 
     post "#{url}"
 
+    expect_status 400
+
     expect(Appointment.last).to eq(nil)
 
   end
@@ -81,6 +89,8 @@ describe "Appointment API POST Request", type: :request do
 
     post "#{url}"
 
+    expect_status 400
+
     expect(Appointment.last).to eq(nil)
 
   end
@@ -91,6 +101,8 @@ describe "Appointment API POST Request", type: :request do
       "start_time=#{@start_time}&comments=#{@comments}"
 
     post "#{url}"
+
+    expect_status 400
 
     expect(Appointment.last).to eq(nil)
 
@@ -109,6 +121,8 @@ describe "Appointment API POST Request", type: :request do
 
     post "#{url}"
 
+    expect_status 400
+
     expect(Appointment.last).to eq(nil)
 
   end
@@ -122,6 +136,8 @@ describe "Appointment API POST Request", type: :request do
       "start_time=#{@start_time}&end_time=#{@end_time}&comments=#{@comments}"
 
     post "#{url}"
+
+    expect_status 400
 
     expect(Appointment.last).to eq(nil)
 
@@ -149,6 +165,8 @@ describe "Appointment API POST Request", type: :request do
 
     post "#{url}"
 
+    expect_status 400
+
     expect(Appointment.last.first_name).to eq("Test1FirstName")
 
   end
@@ -174,6 +192,8 @@ describe "Appointment API POST Request", type: :request do
 
     post "#{url}"
 
+    expect_status 400
+
     # Create third appointment that has end_time between original
     @first_name = "Test3FirstName"
     @start_time = "10/9/2017 8:37"
@@ -184,6 +204,8 @@ describe "Appointment API POST Request", type: :request do
       "start_time=#{@start_time}&end_time=#{@end_time}&comments=#{@comments}"
 
     post "#{url}"
+
+    expect_status 400
 
     # Test to make sure only first appt exists
 
