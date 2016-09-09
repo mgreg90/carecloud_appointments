@@ -56,24 +56,4 @@ describe "Appointment API PUT Request", type: :request do
     )
 
   end
-  # it "updates an appointment found by date"
-  # it "updates an appointment found between dates"
-  # it "updates an appointment found by year"
-  # it "updates an appointment found by month"
-  # it "updates an appointment found by day"
-  # it "updates an appointment found by hour"
-  # it "updates an appointment found by first_name"
-  # it "updates an appointment found by last_name"
-  # it "updates an appointment found by first_name and date"
-  # it "updates an appointment found by last_name and date"
-  # it "updates an appointment found by first_name and year"
-  # it "updates an appointment found by first_name and month"
-  # it "updates an appointment found by first_name and day"
-  # it "updates an appointment found by first_name and hour"
-  # it "updates an appointment found by last_name and year"
-  # it "updates an appointment found by last_name and month"
-  # it "updates an appointment found by last_name and day"
-  # it "updates an appointment found by last_name and hour"
-  # it "gives an error if search returns multiple"
-  # it "gives an error if search returns none"
 end
