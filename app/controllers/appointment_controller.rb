@@ -93,33 +93,9 @@ class AppointmentController < ApplicationController
     these_params
   end
 
-  def to_dt(date_time_string)
-    # Converts date from string in format (m/d/yyyy hh:mm) to DateTime (only EST)
-    if date_time_string.last.to_i.to_s != date_time_string.last
-      # if the last char of dt_string is a letter,
-      tz = date_time_string.split.last.upcase
-      if !DateTime.strptime("#{date_time_string}", '%m/%d/%Y %H:%M %Z')
-        .zone.to_i.zero? || tz == 'UTC' || tz == 'GMT'
-        # if tz is valid, use it.
-        dt = DateTime.strptime("#{date_time_string}", '%m/%d/%Y %H:%M %Z')
-      else
-        # else return
-        return
-        # simple return will work because we validate dates for presence
-      end
-    else
-      # otherwise assume eastern standard time, because CC is in Boston & Miami
-      dt = DateTime.strptime("#{date_time_string} EST", '%m/%d/%Y %H:%M %Z')
-    end
-    dt = (dt + 2000.years) if (dt.year < 1900)
-    # p "dt:"
-    # p dt.year
-    dt
-  end
-
   def clean_user_input_dates(some_params)
-    some_params[:start_time] = to_dt(some_params[:start_time]) if some_params[:start_time]
-    some_params[:end_time] = to_dt(some_params[:end_time]) if some_params[:end_time]
+    some_params[:start_time] = Appointment.to_dt(some_params[:start_time]) if some_params[:start_time]
+    some_params[:end_time] = Appointment.to_dt(some_params[:end_time]) if some_params[:end_time]
     some_params
   end
 
