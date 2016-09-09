@@ -75,6 +75,7 @@ class AppointmentController < ApplicationController
     :id, :first_name, :last_name, :start_time, :end_time, :comments, :year,
     :month, :day, :hour
     )
+    these_params = downcase_names(these_params)
     clean_user_input_dates(these_params)
   end
 
@@ -82,6 +83,7 @@ class AppointmentController < ApplicationController
     these_params = params.permit(
       :first_name, :last_name, :start_time, :end_time, :comments
     )
+    these_params = downcase_names(these_params)
     clean_user_input_dates(these_params)
   end
 
@@ -89,8 +91,8 @@ class AppointmentController < ApplicationController
     these_params = params.require(:appointment).permit(
       :first_name, :last_name, :start_time, :end_time, :comments
     )
+    these_params = downcase_names(these_params)
     clean_user_input_dates(these_params)
-    these_params
   end
 
   def clean_user_input_dates(some_params)
@@ -99,4 +101,9 @@ class AppointmentController < ApplicationController
     some_params
   end
 
+  def downcase_names(some_params)
+    some_params[:first_name].downcase! if some_params[:first_name]
+    some_params[:last_name].downcase! if some_params[:last_name]
+    some_params
+  end
 end

@@ -40,10 +40,11 @@ class Appointment < ApplicationRecord
       end
 
       # if no start_time or end_time, build a range to search by from time units
-      if search_hash[:start_time].nil? && search_hash[:end_time].nil?
+      if search_hash[:start_time].nil? && search_hash[:end_time].nil? && unit_times.any? { |sh| srch_params.keys.include?(sh) }
+        most_specific_index = unit_times.count - 1 # declare for scope
         # find most specific time unit
-        most_specific_index = unit_times.each_with_index do |time, index|
-          return index if srch_params[time]
+        unit_times.each_with_index do |time, index|
+          most_specific_index = index if srch_params[time]
         end
         # loop thru time_units
         unit_times.each_with_index do |time, index|
@@ -53,7 +54,7 @@ class Appointment < ApplicationRecord
             dt_hash[:start_time][time] = srch_params[time]
             dt_hash[:end_time][time] = srch_params[time]
           # elsif time unit is most specific
-          elsif index = most_specific_index
+          elsif index == most_specific_index
             # add it to start and add (it + 1) to end
             dt_hash[:start_time][time] = srch_params[time]
             dt_hash[:end_time][time] = srch_params[time] + 1.send("#{time}s")
@@ -76,12 +77,28 @@ class Appointment < ApplicationRecord
           )
         end
       end
+      name_hash = search_hash.slice(:first_name, :last_name)
+      time_range = (search_hash[:start_time] || DateTime.new)..(search_hash[:end_time] || Appointment.maximum(:end_time))
+      search_hash1 = name_hash.dup
+      search_hash2 = name_hash.dup
+      search_hash1[:start_time] = time_range
+      search_hash2[:end_time] = time_range
+      p "----------------------------- TESTING - FINAL ------------------------"
+      p "dt_hash:"
+      p dt_hash
+      p "time_range:"
+      p time_range
+      p "search_hash1:"
+      p search_hash1
+      p "search_hash2"
+      p search_hash2
+      p "appointments:"
+      @appointments = {
+        appointments: Appointment.where(search_hash1)
+        .or(Appointment.where(search_hash2))
+      }
+      p @appointments
     end
-    p "----------------------------- TESTING --------------------------------"
-    p "dt_hash:"
-    p dt_hash
-    p "search_hash:"
-    p search_hash
     if @appointments[:appointments].nil? || @appointments[:appointments].empty?
       @appointments = {
         errors: {
