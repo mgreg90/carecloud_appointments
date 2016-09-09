@@ -86,6 +86,10 @@ class AppointmentController < ApplicationController
       :first_name, :last_name, :start_time, :end_time, :comments
     )
     clean_user_input_dates(these_params)
+    # p "these_params:"
+    # p these_params
+    # p these_params[:end_time].year
+    these_params
   end
 
   def to_dt(date_time_string)
@@ -96,7 +100,7 @@ class AppointmentController < ApplicationController
       if !DateTime.strptime("#{date_time_string}", '%m/%d/%Y %H:%M %Z')
         .zone.to_i.zero? || tz == 'UTC' || tz == 'GMT'
         # if tz is valid, use it.
-        DateTime.strptime("#{date_time_string}", '%m/%d/%Y %H:%M %Z')
+        dt = DateTime.strptime("#{date_time_string}", '%m/%d/%Y %H:%M %Z')
       else
         # else return
         return
@@ -104,8 +108,12 @@ class AppointmentController < ApplicationController
       end
     else
       # otherwise assume eastern standard time, because CC is in Boston & Miami
-      DateTime.strptime("#{date_time_string} EST", '%m/%d/%Y %H:%M %Z')
+      dt = DateTime.strptime("#{date_time_string} EST", '%m/%d/%Y %H:%M %Z')
     end
+    dt = (dt + 2000.years) if (dt.year < 1900)
+    # p "dt:"
+    # p dt.year
+    dt
   end
 
   def clean_user_input_dates(some_params)
