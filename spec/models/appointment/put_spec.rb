@@ -36,6 +36,26 @@ describe "Appointment API PUT Request", type: :request do
     expect(Appointment.last.first_name).to eq("Test3FirstName")
 
   end
+
+  it "updates an appointment's start_time and end_time found by id" do
+
+    id = Appointment.last.id
+    put "/appointments/#{id}",
+      params: {
+        appointment: {
+          start_time: "12/25/2018 11:30",
+          end_time: "12/25/2018 12:30"
+        }
+      }
+
+    expect(Appointment.last.start_time).to eq(
+      DateTime.new(2018, 12, 25, 11, 30, 0, 'EST')
+    )
+    expect(Appointment.last.end_time).to eq(
+      DateTime.new(2018, 12, 25, 12, 30, 0, 'EST')
+    )
+
+  end
   # it "updates an appointment found by date"
   # it "updates an appointment found between dates"
   # it "updates an appointment found by year"

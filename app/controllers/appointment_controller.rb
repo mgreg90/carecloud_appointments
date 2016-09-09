@@ -82,9 +82,10 @@ class AppointmentController < ApplicationController
   end
 
   def update_params
-    params.require(:appointment).permit(
+    these_params = params.require(:appointment).permit(
       :first_name, :last_name, :start_time, :end_time, :comments
     )
+    clean_user_input_dates(these_params)
   end
 
   def to_dt(date_time_string)
