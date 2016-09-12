@@ -8,10 +8,14 @@ describe "Appointment API PUT Request", type: :request do
       # create two test appointments
       Appointment.create( first_name: 'Test1FirstName',
         last_name: 'Test1LastName',
-        start_time: DateTime.new(2015, 10, 9, 8, 7),
-        end_time: DateTime.new(2015, 10, 9, 9, 7),
+        start_time: DateTime.new(2018, 10, 9, 8, 7),
+        end_time: DateTime.new(2018, 10, 9, 9, 7),
         comments: "Test1Comment"
         )
+      Appointment.first.update(
+        start_time: DateTime.new(2015, 10, 9, 8, 7),
+        end_time: DateTime.new(2018, 10, 9, 9, 7)
+      )
       Appointment.create( first_name: 'Test2FirstName',
         last_name: 'Test2LastName',
         start_time: DateTime.new(2017, 11, 10, 9, 8),
@@ -63,12 +67,13 @@ describe "Appointment API PUT Request", type: :request do
   end
 
   it "updates an appointment's names found by id even if dates in the past" do
+    appt = Appointment.find_by(last_name: "Test1LastName")
 
-    id = Appointment.find_by(last_name: "test1lastname").id
+    id = appt.id
     put "/appointments/#{id}?first_name=david&last_name=mercer"
 
-    expect(Appointment.last.last_name).to eq("mercer".downcase)
-    expect(Appointment.last.first_name).to eq("david".downcase)
+    expect(Appointment.find(id).last_name).to eq("Test1LastName")
+    expect(Appointment.find(id).first_name).to eq("Test1FirstName")
 
   end
 

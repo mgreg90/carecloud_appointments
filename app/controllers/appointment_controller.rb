@@ -40,7 +40,7 @@ class AppointmentController < ApplicationController
 
   def update
     if @appointment[:errors].nil?
-      @appointment[:appointment].update!(new_params)
+      @appointment[:appointment].update(new_params)
       render json: @appointment, status: 200
     else
       render json: @appointment, status: 404
