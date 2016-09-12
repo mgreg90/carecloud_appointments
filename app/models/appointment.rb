@@ -5,7 +5,8 @@ class Appointment < ApplicationRecord
   validates :start_time, presence: { message: "blank or invalid date" }
   validates :end_time, presence: { message: "blank or invalid date" }
 
-  validates_with AppointmentDateValidator
+  validates_with AppointmentDateValidator, on: [:create]
+  validates_with AppointmentUpdateValidator, on: [:update]
 
   def self.set_one(srch_params)
     @appointment = { appointment: find_by_id(srch_params[:id]) }
@@ -36,14 +37,7 @@ class Appointment < ApplicationRecord
       name_hash = search_hash.slice(*names)
       time_range = set_time_range(search_hash)
       search_hash1, search_hash2 = *set_search_hashes(name_hash, time_range)
-      p "*" * 50
-      p search_hash1, search_hash2
       @appointments = search_x_or_y(search_hash1, search_hash2)
-      p @appointments
-      p "All appointments"
-      Appointment.all.each do |x|
-        p x.start_time, x.end_time
-      end
     end
     if @appointments[:appointments].nil? || @appointments[:appointments].empty?
       @appointments = {
