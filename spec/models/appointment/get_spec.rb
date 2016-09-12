@@ -24,6 +24,13 @@ describe "Appointment API GET Request", type: :request do
       end_time: DateTime.new(2017, 11, 10, 11, 9, 0, 'EST'),
       comments: "test3comment"
     )
+    Appointment.create( first_name: 'test4firstname',
+      last_name: 'test4lastname',
+      start_time: DateTime.new(2016, 9, 12, 16, 7, 0, 'EST'),
+      end_time: DateTime.new(2016, 9, 12, 17, 7, 0, 'EST'),
+      comments: "test4comment"
+    )
+
   end
   # --------------------------- End Before all Block ---------------------------
 
@@ -116,8 +123,14 @@ describe "Appointment API GET Request", type: :request do
   it "displays a list of appointments by end_time" do
     get "/appointments?end_time=10/9/16 8:07"
     appointments = json_body[:appointments]
-    expect(appointments.length).to eq(1)
-    expect(appointments.first[:end_time].to_datetime).to eq(DateTime.new(2016, 10, 9, 9, 7, 0, 'EST'))
+    expect(appointments.length).to eq(2)
+    appointments.each do |appt|
+      expect(appt[:end_time].to_datetime).to eq(
+        DateTime.new(2016, 10, 9, 9, 7, 0, 'EST')
+      ).or(eq(
+        DateTime.new(2016, 9, 12, 17, 7, 0, 'EST'))
+      )
+    end
   end
 
   it "displays a list of appointments between start_time and end_time" do
@@ -138,11 +151,30 @@ describe "Appointment API GET Request", type: :request do
       ])
     end
   end
-  it "displays a list of appointments by month"
-  it "displays a list of appointments by day"
-  it "displays a list of appointments by hour"
-  it "displays a list of appointments by first_name"
-  it "displays a list of appointments by last_name"
+  it "displays a list of appointments by month" do
+    get "/appointments?month=10"
+    appointments = json_body[:appointments]
+    expect(appointments.length).to eq(1)
+    expect(appointments.first[:start_time].to_datetime).to eq(DateTime.new(2016, 10, 9, 8, 7, 0, 'EST'))
+  end
+  it "displays a list of appointments by day" do
+    get "/appointments?day=12"
+    appointments = json_body[:appointments]
+    expect(appointments.length).to eq(1)
+    expect(appointments.first[:start_time].to_datetime).to eq(DateTime.new(2016, 9, 12, 16, 7, 0, 'EST'))
+  end
+  it "displays a list of appointments by hour" do
+    get "/appointments?hour=16"
+    appointments = json_body[:appointments]
+    expect(appointments.length).to eq(1)
+    expect(appointments.first[:start_time].to_datetime).to eq(DateTime.new(2016, 9, 12, 16, 7, 0, 'EST'))
+  end
+  it "displays a list of appointments by year, month, day, and hour" do
+    get "/appointments?year=2017&month=11&day=10&hour=9"
+    appointments = json_body[:appointments]
+    expect(appointments.length).to eq(1)
+    expect(appointments.first[:start_time].to_datetime).to eq(DateTime.new(2017, 11, 10, 9, 8, 0, 'EST'))
+  end
   it "displays a list of appointments by first_name and date"
   it "displays a list of appointments by last_name and date"
   it "displays a list of appointments by first_name and year"
