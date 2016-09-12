@@ -74,5 +74,20 @@ https://carecloudappapi.herokuapp.com/appointments/1
 
 using curl:
 ```bash
-curl -X DELETE https://carecloudappapi.herokuapp.com/appointments/1
+curl -X DELETE "https://carecloudappapi.herokuapp.com/appointments/1"
 ```
+
+### Update an Appointment
+The update method is a bit unique in that it takes two sets of parameters: an id to indicate which appointment to update, and a list of keys and values for the attributes to actually be updated. It is simpler than it sounds. Here's an example url:
+```
+https://carecloudappapi.herokuapp.com/appointments/1?first_name=doug&last_name=jenkins
+```
+
+This would update the first and last names of the appointment at id 1.
+
+The HTTP request for an update is PUT. Here is an example curl command:
+```bash
+curl -X PUT "https://carecloudappapi.herokuapp.com/appointments/1?first_name=doug&last_name=jenkins"
+```
+
+Remember, the id before the query string is for the appointment to be updated and all attributes to be updated are listed after the "?".
