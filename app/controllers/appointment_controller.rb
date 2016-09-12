@@ -40,10 +40,7 @@ class AppointmentController < ApplicationController
 
   def update
     if @appointment[:errors].nil?
-      p "*" * 50
-      p @appointment[:appointment]
-      p update_params
-      @appointment[:appointment].update(update_params)
+      @appointment[:appointment].update(new_params)
       render json: @appointment, status: 200
     else
       render json: @appointment, status: 404
@@ -87,13 +84,13 @@ class AppointmentController < ApplicationController
     clean_user_input_dates(these_params)
   end
 
-  def update_params
-    these_params = params.require(:appointment).permit(
-      :first_name, :last_name, :start_time, :end_time, :comments
-    )
-    these_params = downcase_names(these_params)
-    clean_user_input_dates(these_params)
-  end
+  # def update_params
+  #   these_params = params.require(:appointment).permit(
+  #     :first_name, :last_name, :start_time, :end_time, :comments
+  #   )
+  #   these_params = downcase_names(these_params)
+  #   clean_user_input_dates(these_params)
+  # end
 
   def clean_user_input_dates(some_params)
     some_params[:start_time] = Appointment.to_dt(some_params[:start_time]) if some_params[:start_time]

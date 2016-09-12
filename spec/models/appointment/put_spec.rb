@@ -24,29 +24,17 @@ describe "Appointment API PUT Request", type: :request do
   it "updates an appointment's name found by id" do
 
     id = Appointment.last.id
-    put "/appointments/#{id}",
-      params: {
-        appointment: {
-          last_name: "Test3LastName",
-          first_name: "Test3FirstName"
-        }
-      }
+    put "/appointments/#{id}?last_name=Test3LastName&first_name=Test3FirstName"
 
-    expect(Appointment.last.last_name).to eq("Test3LastName")
-    expect(Appointment.last.first_name).to eq("Test3FirstName")
+    expect(Appointment.last.last_name).to eq("Test3LastName".downcase)
+    expect(Appointment.last.first_name).to eq("Test3FirstName".downcase)
 
   end
 
   it "updates an appointment's start_time and end_time found by id" do
 
     id = Appointment.last.id
-    put "/appointments/#{id}",
-      params: {
-        appointment: {
-          start_time: "12/25/2018 11:30",
-          end_time: "12/25/2018 12:30"
-        }
-      }
+    put "/appointments/#{id}?start_time=12/25/2018 11:30&end_time=12/25/2018 12:30"
 
     expect(Appointment.last.start_time).to eq(
       DateTime.new(2018, 12, 25, 11, 30, 0, 'EST')
