@@ -82,7 +82,7 @@ describe "Appointment API GET Request", type: :request do
   it "gives an error if no appointments exist" do
     Appointment.destroy_all
     get "/appointments/"
-    expect_json(errors: {base: "currently no appointments"} )
+    expect_json(errors: {base: "no appointments found"} )
     expect_status 404
 
   end
@@ -158,7 +158,7 @@ describe "Appointment API GET Request", type: :request do
     appointments = json_body[:appointments]
     expect(appointments.length).to eq(4)
   end
-  
+
   it "displays a list of appointments by last_name and date" do
     get "/appointments?last_name=test1lastname&start_time=8/12/2016"
     appointments = json_body[:appointments]

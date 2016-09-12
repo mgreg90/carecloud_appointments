@@ -22,8 +22,8 @@ describe "Appointment API POST Request", type: :request do
     post "#{url}"
 
     appt = Appointment.last
-    expect(appt.first_name).to eq('Test1FirstName')
-    expect(appt.last_name).to eq('Test1LastName')
+    expect(appt.first_name).to eq('Test1FirstName'.downcase)
+    expect(appt.last_name).to eq('Test1LastName'.downcase)
     expect(appt.start_time).to eq(DateTime.new(2017, 10, 9, 8, 7, 0, 'EST'))
     expect(appt.end_time).to eq(DateTime.new(2017, 10, 9, 9, 7, 0, 'EST'))
     expect(appt.comments).to eq('Test1Comment')
@@ -43,8 +43,8 @@ describe "Appointment API POST Request", type: :request do
     post "#{url}"
 
     appt = Appointment.last
-    expect(appt.first_name).to eq('Test1FirstName')
-    expect(appt.last_name).to eq('Test1LastName')
+    expect(appt.first_name).to eq('Test1FirstName'.downcase)
+    expect(appt.last_name).to eq('Test1LastName'.downcase)
     expect(appt.start_time).to eq(DateTime.new(2017, 10, 9, 8, 7, 0, 'CST'))
     expect(appt.end_time).to eq(DateTime.new(2017, 10, 9, 9, 7, 0, 'CST'))
     expect(appt.comments).to eq('Test1Comment')
@@ -165,7 +165,7 @@ describe "Appointment API POST Request", type: :request do
 
     expect_status 400
 
-    expect(Appointment.last.first_name).to eq("Test1FirstName")
+    expect(Appointment.last.first_name).to eq("Test1FirstName".downcase)
 
   end
 
@@ -208,7 +208,7 @@ describe "Appointment API POST Request", type: :request do
     # Test to make sure only first appt exists
 
     expect(Appointment.all.length).to eq(1)
-    expect(Appointment.last.first_name).to eq("Test1FirstName")
+    expect(Appointment.last.first_name).to eq("Test1FirstName".downcase)
 
   end
 

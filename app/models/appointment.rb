@@ -48,7 +48,7 @@ class Appointment < ApplicationRecord
     if @appointments[:appointments].nil? || @appointments[:appointments].empty?
       @appointments = {
         errors: {
-          base: "currently no appointments"
+          base: "no appointments found"
         }
       }
     end
