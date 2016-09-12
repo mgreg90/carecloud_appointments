@@ -26,8 +26,8 @@ describe "Appointment API GET Request", type: :request do
     )
     Appointment.create( first_name: 'test4firstname',
       last_name: 'test4lastname',
-      start_time: DateTime.new(2016, 9, 12, 16, 7, 0, 'EST'),
-      end_time: DateTime.new(2016, 9, 12, 17, 7, 0, 'EST'),
+      start_time: DateTime.new(2016, 9, 12, 18, 7, 0, 'EST'),
+      end_time: DateTime.new(2016, 9, 12, 19, 7, 0, 'EST'),
       comments: "test4comment"
     )
 
@@ -128,7 +128,7 @@ describe "Appointment API GET Request", type: :request do
       expect(appt[:end_time].to_datetime).to eq(
         DateTime.new(2016, 10, 9, 9, 7, 0, 'EST')
       ).or(eq(
-        DateTime.new(2016, 9, 12, 17, 7, 0, 'EST')
+        DateTime.new(2016, 9, 12, 19, 7, 0, 'EST')
       ))
     end
   end
