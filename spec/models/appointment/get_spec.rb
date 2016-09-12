@@ -140,52 +140,43 @@ describe "Appointment API GET Request", type: :request do
     expect(appointments.first[:end_time].to_datetime).to eq(DateTime.new(2017, 11, 10, 10, 8, 0, 'EST'))
   end
 
-  it "displays a list of appointments by year" do
-    get "/appointments?year=2017"
-    appointments = json_body[:appointments]
-    expect(appointments.length).to eq(2)
-    appointments.each do |appt|
-      expect(appt[:start_time].to_datetime).to be_in([
-        DateTime.new(2017, 11, 10, 9, 8, 0, 'EST'),
-        DateTime.new(2017, 11, 10, 10, 9, 0, 'EST')
-      ])
-    end
-  end
-  it "displays a list of appointments by month" do
-    get "/appointments?month=10"
-    appointments = json_body[:appointments]
-    expect(appointments.length).to eq(1)
-    expect(appointments.first[:start_time].to_datetime).to eq(DateTime.new(2016, 10, 9, 8, 7, 0, 'EST'))
-  end
-  it "displays a list of appointments by day" do
-    get "/appointments?day=12"
-    appointments = json_body[:appointments]
-    expect(appointments.length).to eq(1)
-    expect(appointments.first[:start_time].to_datetime).to eq(DateTime.new(2016, 9, 12, 16, 7, 0, 'EST'))
-  end
-  it "displays a list of appointments by hour" do
-    get "/appointments?hour=16"
-    appointments = json_body[:appointments]
-    expect(appointments.length).to eq(1)
-    expect(appointments.first[:start_time].to_datetime).to eq(DateTime.new(2016, 9, 12, 16, 7, 0, 'EST'))
-  end
-  it "displays a list of appointments by year, month, day, and hour" do
-    get "/appointments?year=2017&month=11&day=10&hour=9"
-    appointments = json_body[:appointments]
-    expect(appointments.length).to eq(1)
-    expect(appointments.first[:start_time].to_datetime).to eq(DateTime.new(2017, 11, 10, 9, 8, 0, 'EST'))
-  end
+  # it "displays a list of appointments by year" do
+  #   get "/appointments?year=2017"
+  #   appointments = json_body[:appointments]
+  #   expect(appointments.length).to eq(2)
+  #   appointments.each do |appt|
+  #     expect(appt[:start_time].to_datetime).to be_in([
+  #       DateTime.new(2017, 11, 10, 9, 8, 0, 'EST'),
+  #       DateTime.new(2017, 11, 10, 10, 9, 0, 'EST')
+  #     ])
+  #   end
+  # end
+  # it "displays a list of appointments by month" do
+  #   get "/appointments?month=10"
+  #   appointments = json_body[:appointments]
+  #   expect(appointments.length).to eq(1)
+  #   expect(appointments.first[:start_time].to_datetime).to eq(DateTime.new(2016, 10, 9, 8, 7, 0, 'EST'))
+  # end
+  # it "displays a list of appointments by day" do
+  #   get "/appointments?day=12"
+  #   appointments = json_body[:appointments]
+  #   expect(appointments.length).to eq(1)
+  #   expect(appointments.first[:start_time].to_datetime).to eq(DateTime.new(2016, 9, 12, 16, 7, 0, 'EST'))
+  # end
+  # it "displays a list of appointments by hour" do
+  #   get "/appointments?hour=16"
+  #   appointments = json_body[:appointments]
+  #   expect(appointments.length).to eq(1)
+  #   expect(appointments.first[:start_time].to_datetime).to eq(DateTime.new(2016, 9, 12, 16, 7, 0, 'EST'))
+  # end
+  # it "displays a list of appointments by year, month, day, and hour" do
+  #   get "/appointments?year=2017&month=11&day=10&hour=9"
+  #   appointments = json_body[:appointments]
+  #   expect(appointments.length).to eq(1)
+  #   expect(appointments.first[:start_time].to_datetime).to eq(DateTime.new(2017, 11, 10, 9, 8, 0, 'EST'))
+  # end
   it "displays a list of appointments by first_name and date"
   it "displays a list of appointments by last_name and date"
-  it "displays a list of appointments by first_name and year"
-  it "displays a list of appointments by first_name and month"
-  it "displays a list of appointments by first_name and day"
-  it "displays a list of appointments by first_name and hour"
-  it "displays a list of appointments by last_name and year"
-  it "displays a list of appointments by last_name and month"
-  it "displays a list of appointments by last_name and day"
-  it "displays a list of appointments by last_name and hour"
-
 
   # Clear appointments after test is done
   after :all do

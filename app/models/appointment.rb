@@ -36,9 +36,9 @@ class Appointment < ApplicationRecord
       unit_times = [:year, :month, :day, :hour]
 
       # if no start_time or end_time, build a range to search by from time units
-      if !exists_in?(search_hash, [:start_time, :end_time]) && unit_times.any? { |ut| srch_params.keys.include?(ut.to_s) }
-        search_hash = unit_times_to_dt_ranges(search_hash, unit_times, srch_params, full_times)
-      end
+      # if !exists_in?(search_hash, [:start_time, :end_time]) && unit_times.any? { |ut| srch_params.keys.include?(ut.to_s) }
+      #   search_hash = unit_times_to_dt_ranges(search_hash, unit_times, srch_params, full_times)
+      # end
 
       name_hash = search_hash.slice(*names)
       time_range = set_time_range(search_hash)
