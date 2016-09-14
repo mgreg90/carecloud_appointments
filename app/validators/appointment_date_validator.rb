@@ -5,6 +5,7 @@ class AppointmentDateValidator < ActiveModel::Validator
       start_time_in_future(appt)
       end_time_after_start_time(appt)
       no_appt_conflict(appt)
+      no_appt_overlap(appt)
     end
   end
 
@@ -33,12 +34,20 @@ class AppointmentDateValidator < ActiveModel::Validator
     rng = appt[:start_time]..appt[:end_time]
     conflicts = Appointment.where(start_time: rng)
       .or(Appointment.where(end_time: rng))
-    if conflicts.empty? || (conflicts.count == 1 && appt.id == conflicts.first.id)
+    unless conflicts.empty? || (conflicts.count == 1 && appt.id == conflicts.first.id)
       # if there are no conflicts or one conflict is the active appt (for update)
       # then it is valid
-    else
-      appt.errors.add(:start_time, "appointment time is not in the future")
+      appt.errors.add(:start_time, "time conflicts with another appointment")
     end
   end
 
+  def no_appt_overlap(appt)
+    overlaps = Appointment.where('start_time < ?', appt[:start_time])
+      .where('end_time > ?', appt[:end_time])
+    unless overlaps.empty? || (overlaps.count == 1 && appt.id == overlaps.first.id)
+      appt.errors.add(:start_time, "time conflicts with another appointment")
+    end
+  end
 end
+
+# localhost:3000/appointments?first_name=Test&last_name=Test&start_time=11/1/13 6:30&end_time=11/1/13 7:10
